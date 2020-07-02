@@ -11,7 +11,7 @@ def loginUser(event,context,dynamodb=None):
             body = ast.literal_eval(event['body'])
             user_id = body ['user_id']
             password = body ['password']
-            print(user_id,password)
+            print(user_id)
             resp = etoken_table.get_item(
                 Key={
                 'pk': user_id,

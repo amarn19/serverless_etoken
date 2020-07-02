@@ -13,7 +13,7 @@ def createUser(event,context,dynamodb=None):
         user_id = body['user_id']
         password = body['password']
         user_type = body['type']
-        print(user_id,password,user_type)
+        print(user_id,user_type)
         response = etoken_table.put_item(
             Item={
                 'pk': user_id,
