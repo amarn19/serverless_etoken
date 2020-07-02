@@ -53,9 +53,7 @@ provider:
 #            - "/*"
 
 # you can define service wide environment variables here
-  environment:
-     DYNAMODB_USER_TABLE: etoken_table
-     JWT_SECRET: ${param:JWT_SECRET}
+  
 #    variable1: value1
 
 # you can add packaging information here
@@ -70,6 +68,9 @@ provider:
 functions:
   loginUser:
     handler: src/functions/loginUser.loginUser
+    environment:
+      DYNAMODB_USER_TABLE: etoken_table
+      JWT_SECRET: ${param:JWT_SECRET}
     events:
       - http:
           method: post
@@ -77,6 +78,9 @@ functions:
           path: /v1/user/login
   createUser:
     handler: src/functions/createUser.createUser
+    environment:
+      DYNAMODB_USER_TABLE: etoken_table
+      JWT_SECRET: ${param:JWT_SECRET}
     events:
       - http:
           method: post

@@ -1,14 +1,17 @@
 import json
 import boto3
-    
+import ast
+import os
+
 def loginUser(event,context,dynamodb=None):
         try:
             if not dynamodb:
                 dynamodb = boto3.resource('dynamodb')
-            etoken_table = dynamodb.Table('etoken_table')
-            user_id = event ['user_id']
-            password = event ['password']
-            print(user_id)
+            etoken_table = dynamodb.Table(os.environ['DYNAMODB_USER_TABLE'])
+            body = ast.literal_eval(event['body'])
+            user_id = body ['user_id']
+            password = body ['password']
+            print(user_id,password)
             resp = etoken_table.get_item(
                 Key={
                 'pk': user_id,
@@ -16,16 +19,16 @@ def loginUser(event,context,dynamodb=None):
             }
             )
     
-            print('lambda function')
-            if ("Item" in resp):
+            print(resp)
+            if ('Item' in resp):
                 return {
                     'statusCode': 200,
                     'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
-                    'body': json.dumps('Incorrect login credentials.Try again')
+                    'body': json.dumps('Login Successful')
             }
             else:
                 return {
-                    'statusCode': 200,
+                    'statusCode': 404,
                     'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
                     'body': json.dumps('Incorrect login credentials.Try again')
             }
@@ -33,5 +36,6 @@ def loginUser(event,context,dynamodb=None):
             print('Closing lambda function')
             return {
                     'statusCode': 400,
+                    'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
                     'body': json.dumps('Login failed.Try again')
             }
