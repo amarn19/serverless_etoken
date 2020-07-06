@@ -144,6 +144,7 @@ functions:
 plugins:
   - serverless-pseudo-parameters
   - serverless-mocha
+  - serverless-offline
 
 custom:
   dynamodb:
