@@ -7,7 +7,7 @@ def loginUser(event,context,dynamodb=None):
         try:
             if not dynamodb:
                 dynamodb = boto3.resource('dynamodb')
-            etoken_table = dynamodb.Table(os.environ['DYNAMODB_USER_TABLE'])
+            etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
             body = ast.literal_eval(event['body'])
             user_id = body ['user_id']
             password = body ['password']

@@ -2,12 +2,10 @@
     "definitions": {},
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "title": "Create User Schema",
+    "title": "Create User Profile schema",
     "required": [
       "user_id",
-      "password",
-      "type",
-      "user_type"
+      "password"
     ],
     "properties": {
       "user_id": {
@@ -18,18 +16,6 @@
       },
       "password": {
         "title": "Password",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 50
-      },
-      "type": {
-        "title": "itemtype",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 50
-      },
-      "user_type": {
-        "title": "Usertype",
         "type": "string",
         "minLength": 1,
         "maxLength": 50
