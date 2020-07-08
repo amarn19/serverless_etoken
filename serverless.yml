@@ -23,7 +23,7 @@ custom:
   serverless-mocha-plugin:
     testTemplate: template/test-template.ejs
     functionTemplate: template/function-template.ejs
-    
+
 provider:
   name: aws
   runtime: python3.7
@@ -56,14 +56,14 @@ functions:
           request:
             schema:
               application/json: ${file(src/schema/login_user_request.json)}
-            
+
   createUser:
     handler: src/functions/createUser.createUser
-    description: POST /user
+    description: POST /user/register
     events:
       - http:
           method: post
-          path: /v1/user
+          path: /user/register
           cors:
             origin: "*"
             headers: ${self:custom.allowedHeaders}
@@ -71,21 +71,58 @@ functions:
             schema:
               application/json: ${file(src/schema/create_user_request.json)}
 
-  updateUser:
+  createUserProfile:
     handler: src/functions/createUserProfile.userProfile
-    description: PATCH /user
+    description: PATCH /user/createProfile
     events:
       - http:
           method: patch
-          path: /v1/user
+          path: /user/createProfile
           cors:
             origin: "*"
             headers: ${self:custom.allowedHeaders}
           request:
             schema:
-              application/json: ${file(src/schema/createUserProfile.json)}
+              application/json: ${file(src/schema/createUserProfile_request.json)}
 
-
+  deleteUser:
+    handler: src/functions/deleteUser.deleteUser
+    description: DELETE /user/delete
+    events:
+      - http:
+          method: delete
+          path: /user/delete
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+          request:
+            schema:
+              application/json: ${file(src/schema/delete_user_request.json)}
+  
+  getUser:
+    handler: src/functions/getUser.getUser
+    description: POST /user/fetch
+    events:
+      - http:
+          method: POST
+          path: /user/fetch
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+          request:
+            schema:
+              application/json: ${file(src/schema/get_user_request.json)}
+  
+  getUsers:
+    handler: src/functions/getUsers.getUsers
+    description: GET /user/fetchAll
+    events:
+      - http:
+          method: GET
+          path: /user/fetchAll
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
 resources:
   Resources:
     ETOKENTABLE:

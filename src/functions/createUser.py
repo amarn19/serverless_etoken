@@ -2,6 +2,7 @@ import ast
 import boto3
 import os
 import json
+from botocore.exceptions import ClientError
 
 
 def createUser(event,context,dynamodb=None):
@@ -26,8 +27,9 @@ def createUser(event,context,dynamodb=None):
         )
         print(response)
         return {'statusCode': 200,'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},'body': json.dumps('Succesfully created user')}
-    except:
+    except ClientError as e:
         print('Closing lambda function')
+        print(e.response['Error']['Message'])
         return {
                 'statusCode': 400,
                 'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},

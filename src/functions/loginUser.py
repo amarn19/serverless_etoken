@@ -2,6 +2,7 @@ import json
 import boto3
 import ast
 import os
+from botocore.exceptions import ClientError
 
 def loginUser(event,context,dynamodb=None):
         try:
@@ -32,8 +33,9 @@ def loginUser(event,context,dynamodb=None):
                     'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
                     'body': json.dumps('Incorrect login credentials.Try again')
             }
-        except:
+        except ClientError as e:
             print('Closing lambda function')
+            print(e.response['Error']['Message'])
             return {
                     'statusCode': 400,
                     'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
