@@ -123,6 +123,17 @@ functions:
           cors:
             origin: "*"
             headers: ${self:custom.allowedHeaders}
+  
+  updateUser:
+    handler: src/functions/updateUser.updateUser
+    description: POST /user/update
+    events:
+      - http:
+          method: POST
+          path: /user/update
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
 resources:
   Resources:
     ETOKENTABLE:
