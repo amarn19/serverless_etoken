@@ -24,12 +24,12 @@ def getUsers(event, context, dynamodb=None):
             data.extend(response['Items'])
 
         print(response)
-        return {'statusCode': 200, 'headers': {"Allow-Contol-Allow-Origin": "*", "Allow-Contol-Allow-Credentials": True, "Allow-Contol-Allow-Headers": "Authorization"}, 'body': json.dumps(data,default=default)}
+        return {'statusCode': 200, 'headers': {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": True, "Access-Control-Allow-Headers": "Authorization"}, 'body': json.dumps(data,default=default)}
     except ClientError as e:
         print('Closing lambda function')
         print(e.response['Error']['Message'])
         return {
             'statusCode': 400,
-            'headers': {"Allow-Contol-Allow-Origin": "*", "Allow-Contol-Allow-Credentials": True, "Allow-Contol-Allow-Headers": "Authorization"},
+            'headers': {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": True, "Access-Control-Allow-Headers": "Authorization"},
             'body': json.dumps('Error creating user')
         }

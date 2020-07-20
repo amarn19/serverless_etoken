@@ -12,7 +12,6 @@ def updateUser(event, context, dynamodb=None):
         etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
         body = ast.literal_eval(event['body'])
         user_id = body['user_id']
-        password = body['password']
         update_key = body['update']
         user_type = body['user_type']
         item = body['item']
@@ -21,7 +20,7 @@ def updateUser(event, context, dynamodb=None):
         response = etoken_table.get_item(
             Key={
                 'pk': user_id,
-                'sk': password
+                'sk': user_type
             })
         
         db_user_type = response['Item']['user']        
@@ -46,12 +45,12 @@ def updateUser(event, context, dynamodb=None):
             ReturnValues="UPDATED_NEW"
         )
         print(response)
-        return {'statusCode': 200, 'headers': {"Allow-Contol-Allow-Origin": "*", "Allow-Contol-Allow-Credentials": True, "Allow-Contol-Allow-Headers": "Authorization"}, 'body': json.dumps('Succesfully updated user')}
+        return {'statusCode': 200, 'headers': {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": True, "Access-Control-Allow-Headers": "Authorization"}, 'body': json.dumps('Succesfully updated user')}
     except ClientError as e:
         print('Closing lambda function')
         print(e.response['Error']['Message'])
         return {
             'statusCode': 400,
-            'headers': {"Allow-Contol-Allow-Origin": "*", "Allow-Contol-Allow-Credentials": True, "Allow-Contol-Allow-Headers": "Authorization"},
+            'headers': {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": True, "Access-Control-Allow-Headers": "Authorization"},
             'body': json.dumps('Error updating user')
         }

@@ -28,7 +28,7 @@ provider:
   name: aws
   runtime: python3.7
   region: us-east-1
-  stage: dev
+  stage: development
   memorySize: 128
   timeout: 5
   endpointType: regional

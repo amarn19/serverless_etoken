@@ -11,7 +11,7 @@ def loginUser(event,context,dynamodb=None):
             etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
             body = ast.literal_eval(event['body'])
             user_id = body ['user_id']
-            password = body ['password']
+            user_type = body ['user_type']
             print(user_id)
             resp = etoken_table.get_item(
                 Key={
@@ -24,13 +24,13 @@ def loginUser(event,context,dynamodb=None):
             if ('Item' in resp):
                 return {
                     'statusCode': 200,
-                    'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
+                    'headers': {"Access-Control-Allow-Origin": "*","Access-Control-Allow-Credentials": True,"Access-Control-Allow-Headers": "Authorization"},
                     'body': json.dumps('Login Successful')
             }
             else:
                 return {
                     'statusCode': 404,
-                    'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
+                    'headers': {"Access-Control-Allow-Origin": "*","Access-Control-Allow-Credentials": True,"Access-Control-Allow-Headers": "Authorization"},
                     'body': json.dumps('Incorrect login credentials.Try again')
             }
         except ClientError as e:
@@ -38,6 +38,6 @@ def loginUser(event,context,dynamodb=None):
             print(e.response['Error']['Message'])
             return {
                     'statusCode': 400,
-                    'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
+                    'headers': {"Access-Control-Allow-Origin": "*","Access-Control-Allow-Credentials": True,"Access-Control-Allow-Headers": "Authorization"},
                     'body': json.dumps('Login failed.Try again')
             }

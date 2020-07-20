@@ -12,27 +12,26 @@ def createUser(event,context,dynamodb=None):
         etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
         body = ast.literal_eval(event['body'])
         user_id = body['user_id']
-        password = body['password']
-        item_type= body['type']
+        item_type= body['item_type']
         user_type= body['user_type']
         print(user_id,user_type)
         response = etoken_table.put_item(
             Item={
                 'pk': user_id,
-                'sk': password,
-                'type': item_type,
-                'user': user_type
+                'sk': user_type,
+                'type': item_type
             },
             ConditionExpression='attribute_not_exists(pk) AND attribute_not_exists(sk)'
         )
         print(response)
-        return {'statusCode': 200,'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},'body': json.dumps('Succesfully created user')}
+        return {'statusCode': 200,
+                'headers': {"Access-Control-Allow-Origin": "*","Access-Control-Allow-Credentials": True,"Access-Control-Allow-Headers": "Authorization"},'body': json.dumps('Succesfully created user')}
     except ClientError as e:
         print('Closing lambda function')
         print(e.response['Error']['Message'])
         return {
                 'statusCode': 400,
-                'headers': {"Allow-Contol-Allow-Origin": "*","Allow-Contol-Allow-Credentials": True,"Allow-Contol-Allow-Headers": "Authorization"},
+                'headers': {"Access-Control-Allow-Origin": "*","Access-Control-Allow-Credentials": True,"Access-Control-Allow-Headers": "Authorization"},
                 'body': json.dumps('Error creating user')
         }    
 

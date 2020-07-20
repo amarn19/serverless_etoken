@@ -5,9 +5,8 @@
     "title": "Create User Schema",
     "required": [
       "user_id",
-      "password",
-      "type",
-      "user_type"
+      "user_type",
+      "item_type"
     ],
     "properties": {
       "user_id": {
@@ -16,20 +15,14 @@
         "minLength": 3,
         "maxLength": 50
       },
-      "password": {
-        "title": "Password",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 50
-      },
-      "type": {
-        "title": "itemtype",
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 50
-      },
       "user_type": {
-        "title": "Usertype",
+        "title": "User",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      },
+      "item_type": {
+        "title": "itemtype",
         "type": "string",
         "minLength": 1,
         "maxLength": 50

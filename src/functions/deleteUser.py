@@ -12,23 +12,23 @@ def deleteUser(event,context,dynamodb=None):
         etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
         body = ast.literal_eval(event['body'])
         user_id = body['user_id']
-        password = body['password']
+        user_type = body['user_type']
         print(user_id)
         
         response = etoken_table.delete_item(
             Key={
                 'pk': user_id,
-                'sk': password
+                'sk': user_type
             }
         )
         print(response)
-        return {'statusCode': 200, 'headers': {"Allow-Contol-Allow-Origin": "*", "Allow-Contol-Allow-Credentials": True, "Allow-Contol-Allow-Headers": "Authorization"}, 'body': json.dumps('Succesfully deleted user')}
+        return {'statusCode': 200, 'headers': {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": True, "Access-Control-Allow-Headers": "Authorization"}, 'body': json.dumps('Succesfully deleted user')}
     
     except ClientError as e:
         print('Closing lambda function')
         print(e.response['Error']['Message'])
         return {
             'statusCode': 400,
-            'headers': {"Allow-Contol-Allow-Origin": "*", "Allow-Contol-Allow-Credentials": True, "Allow-Contol-Allow-Headers": "Authorization"},
+            'headers': {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": True, "Access-Control-Allow-Headers": "Authorization"},
             'body': json.dumps('Error deleting user')
         }
