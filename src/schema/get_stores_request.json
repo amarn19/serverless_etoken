@@ -1,0 +1,17 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "GET stores Schema",
+    "required": [
+        "zipcode"
+    ],
+    "properties": {
+        "zipcode": {
+            "type": "string",
+            "title": "zipcode",
+            "minLength": 5,
+            "maxLength": 5
+        }
+    }
+}

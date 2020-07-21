@@ -69,7 +69,7 @@ functions:
             headers: ${self:custom.allowedHeaders}
           request:
             schema:
-              application/json: ${file(src/schema/create_user_request.json)}
+              application/json: ${file(src/schema/getStores_request.json)}
 
   createUserProfile:
     handler: src/functions/createUserProfile.userProfile
@@ -134,6 +134,19 @@ functions:
           cors:
             origin: "*"
             headers: ${self:custom.allowedHeaders}
+  getStores:
+    handler: src/functions/getStores.getStores
+    description: POST /user/getStores
+    events:
+      - http:
+          method: POST
+          path: /user/getStores
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+          request:
+            schema:
+              application/json: ${file(src/schema/get_stores_request.json)}
 resources:
   Resources:
     ETOKENTABLE:
