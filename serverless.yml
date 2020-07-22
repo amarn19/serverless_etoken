@@ -67,9 +67,7 @@ functions:
           cors:
             origin: "*"
             headers: ${self:custom.allowedHeaders}
-          request:
-            schema:
-              application/json: ${file(src/schema/getStores_request.json)}
+          
 
   createUserProfile:
     handler: src/functions/createUserProfile.userProfile
