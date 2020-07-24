@@ -67,6 +67,17 @@ functions:
           cors:
             origin: "*"
             headers: ${self:custom.allowedHeaders}
+            
+  createStore:
+    handler: src/functions/createStore.createStore
+    description: POST /user/register
+    events:
+      - http:
+          method: post
+          path: /user/registerStore
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
           
 
   createUserProfile:
@@ -82,6 +93,17 @@ functions:
           request:
             schema:
               application/json: ${file(src/schema/createUserProfile_request.json)}
+  
+  createSlot:
+      handler: src/functions/createSlots.createSlots
+      description: PATCH /user/createSlot
+      events:
+        - http:
+            method: patch
+            path: /user/createSlot
+            cors:
+              origin: "*"
+              headers: ${self:custom.allowedHeaders}
 
   deleteUser:
     handler: src/functions/deleteUser.deleteUser
