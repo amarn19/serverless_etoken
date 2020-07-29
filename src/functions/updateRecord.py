@@ -14,18 +14,18 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # function to construct userProfile request and update userProfile in dynambodb
-def userProfileCreation(body):
+def updateRecord(body):
     try:
-        user_id = body['user_id']
-        user_type = body['user_type']
+        pk = body['pk']
+        sk = body['sk']
         item = body['item']
-        logger.info(user_id)
-        logger.info(user_type)
+        logger.info(pk)
+        logger.info(sk)
         logger.info(item)
         response = etoken_table.update_item(
             Key={
-                'pk': user_id,
-                'sk': user_type
+                'pk': pk,
+                'sk': sk
             },
             UpdateExpression="set #t = :a",
             ExpressionAttributeNames={

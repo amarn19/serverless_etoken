@@ -2,23 +2,23 @@
     "definitions": {},
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "title": "GET User Schema",
+    "title": "Delete User Schema",
     "required": [
-        "user_id",
-        "user_type"
+        "zipcode",
+        "store_name"
     ],
     "properties": {
         "user_id": {
             "type": "string",
-            "title": "Username",
-            "minLength": 3,
-            "maxLength": 50
+            "title": "zipcode",
+            "minLength": 5,
+            "maxLength": 7
         },
         "user_type": {
-            "title": "User",
             "type": "string",
+            "title": "store_name",
             "minLength": 1,
-            "maxLength": 50
+            "maxLength": 30
         }
     }
 }

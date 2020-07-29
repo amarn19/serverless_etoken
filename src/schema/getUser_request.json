@@ -2,7 +2,7 @@
     "definitions": {},
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "title": "Delete User Schema",
+    "title": "GET User Schema",
     "required": [
         "user_id",
         "user_type"
@@ -12,13 +12,13 @@
             "type": "string",
             "title": "Username",
             "minLength": 3,
-            "maxLength": 50
+            "maxLength": 20
         },
         "user_type": {
-            "title": "user",
             "type": "string",
-            "minLength": 1,
-            "maxLength": 50
+            "title": "User",
+            "minLength": 7,
+            "maxLength": 11
         }
     }
 }

@@ -27,7 +27,7 @@ def createSlots(event, context, dynamodb=None):
             ExpressionAttributeValues={
                 ':a': slots
             },
-            ReturnValues="UPDATED_NEW"
+            ReturnValues="Updated record"
         )
         print(response)
         return {'statusCode': 200, 'headers': {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Credentials": True, "Access-Control-Allow-Headers": "Authorization"}, 'body': json.dumps('Succesfully created slot')}

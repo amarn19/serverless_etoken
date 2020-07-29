@@ -11,7 +11,7 @@
             "type": "string",
             "title": "zipcode",
             "minLength": 5,
-            "maxLength": 5
+            "maxLength": 7
         }
     }
 }

@@ -58,7 +58,7 @@ def getUser(event, context, dynamodb=None):
                 }
     except Exception as e:
         logger.info('Closing lambda function')
-        logger.info(e.response['Error']['Message'])
+        logger.info(e)
         return {
             'statusCode': 400,
             'headers':

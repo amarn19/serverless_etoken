@@ -2,10 +2,11 @@
     "definitions": {},
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "title": "Login User Schema",
+    "title": "Create User Profile schema",
     "required": [
-      "user_id",
-      "user_type"
+      "pk",
+      "sk",
+      "item"
     ],
     "properties": {
       "user_id": {
@@ -15,10 +16,14 @@
         "maxLength": 50
       },
       "user_type": {
-        "title": "User",
+        "title": "user",
         "type": "string",
         "minLength": 1,
         "maxLength": 50
+      },
+      "item": {
+        "title": "update attribute",
+        "type": "object"
       }
     }
   }
