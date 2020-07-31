@@ -90,22 +90,23 @@ def updateItem(pk,sk,item):
             raise
     return response
 
-def newSlots():
+def newSlots(zipcode,store_name,slot_date,slot_info):
+    print(zipcode,store_name,slot_date,slot_info)
     try:
         response = etoken_table.update_item(
             Key={
                 'pk': zipcode,
                 'sk': store_name
             },
-            UpdateExpression="set #t = :a",
+            UpdateExpression="set slots.#t = :a",
             ExpressionAttributeNames={
-                '#t': 'slots'
+                '#t': slot_date
             },
             ExpressionAttributeValues={
-                ':a': slots
+                ':a': slot_info
             },
-            ReturnValues="Updated record"
+            ReturnValues="UPDATED_NEW"
         )
-    except ClientError as e:
-            raise
+    except Exception as e:
+            print(e)
     return response
