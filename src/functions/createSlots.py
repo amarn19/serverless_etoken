@@ -45,7 +45,7 @@ def slotsCreation(body):
         return response
     
 def generateTokens(start_time,end_time,shopping_time,capacity):
-    shopping_time=datetime.strptime(shopping_time, '%H:%M').hour*3600
+    shopping_time=datetime.strptime(shopping_time, '%H:%M').hour*3600+datetime.strptime(shopping_time, '%H:%M').minute*60
     diff = (datetime.strptime(end_time, '%H:%M')-datetime.strptime(start_time, '%H:%M')).seconds
     tokens=int(diff/shopping_time)*int(capacity)
     return tokens
