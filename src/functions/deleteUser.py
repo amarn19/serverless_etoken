@@ -4,11 +4,8 @@ import os
 import json
 import logging
 from botocore.exceptions import ClientError
+from src.repositories.repository import removeUser 
 
-# dynamodb instance creation
-dynamodb = boto3.resource('dynamodb')
-# fetching dynamodb table
-etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
 # Logger configuration
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -19,12 +16,7 @@ def userDeletion(body):
         user_id = body['user_id']
         user_type = body['user_type']
         logger.info(user_id)
-        response = etoken_table.delete_item(
-            Key={
-                'pk': user_id,
-                'sk': user_type
-            }
-        )
+        response = removeUser(user_id,user_type)
     except ClientError as e:
         if e.response['Error']['Code'] == "ConditionalCheckFailedException":
             logger.info(e.response['Error']['Message'])

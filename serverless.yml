@@ -85,7 +85,18 @@ functions:
           request:
             schema:
               application/json: ${file(src/schema/updateRecord_request.json)}
-  
+
+  bookSlot:
+    handler: src/functions/bookSlot.bookSlot
+    description: PATCH /user/bookSlot
+    events:
+      - http:
+          method: patch
+          path: /user/bookSlot
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+            
   createSlot:
       handler: src/functions/createSlots.createSlots
       description: PATCH /user/createSlot

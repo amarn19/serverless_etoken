@@ -4,38 +4,20 @@ import os
 import json
 import logging
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key, Attr
+from src.repositories.repository import updateItem
 
-# dynamodb instance creation
-dynamodb = boto3.resource('dynamodb')
-# fetching dynamodb table
-etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
 # Logger configuration
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # function to construct userProfile request and update userProfile in dynambodb
-def updateRecord(body):
+def update(body):
     try:
         pk = body['pk']
         sk = body['sk']
         item = body['item']
-        logger.info(pk)
-        logger.info(sk)
-        logger.info(item)
-        response = etoken_table.update_item(
-            Key={
-                'pk': pk,
-                'sk': sk
-            },
-            UpdateExpression="set #t = :a",
-            ExpressionAttributeNames={
-                '#t': item['key']
-            },
-            ExpressionAttributeValues={
-                ':a': item
-            },
-            ReturnValues="UPDATED_NEW"
-        )
+        response = updateItem(pk,sk,item)
     except ClientError as e:
         if e.response['Error']['Code'] == "ConditionalCheckFailedException":
             logger.info(e.response['Error']['Message'])
@@ -45,10 +27,10 @@ def updateRecord(body):
         return response
 
 # Lambda handler function
-def userProfile(event, context, dynamodb=None):
+def updateRecord(event, context, dynamodb=None):
     try:
         body = ast.literal_eval(event['body'])
-        response = userProfileCreation(body)
+        response = update(body)
         logger.info(response)
         return {'statusCode': 200,
                 'headers': {

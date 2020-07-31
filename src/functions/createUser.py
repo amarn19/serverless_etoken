@@ -4,11 +4,7 @@ import os
 import json
 import logging
 from botocore.exceptions import ClientError
-
-#dynamodb instance creation
-dynamodb = boto3.resource('dynamodb')
-#fetching dynamodb table
-etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
+from src.repositories.repository import newItem 
 #Logger configuration
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -35,12 +31,7 @@ def userCreation(body):
             store_details = body['store_details']
             messages = body['messages']
             item.update({'store_details': store_details, 'messages': messages})
-            logger.info(user_id)
-            logger.info(user_type)
-        response = etoken_table.put_item(
-            Item=item,
-            ConditionExpression='attribute_not_exists(pk) AND attribute_not_exists(sk)'
-        )
+        response = newItem(pk,sk,item)
     except ClientError as e:
         if e.response['Error']['Code'] == "ConditionalCheckFailedException":
             logger.info(e.response['Error']['Message'])

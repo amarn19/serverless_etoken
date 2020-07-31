@@ -5,15 +5,11 @@ import json
 import logging
 from botocore.exceptions import ClientError
 from decimal import Decimal
+from src.repositories.repository import fetchUser
 
-# dynamodb instance creation
-dynamodb = boto3.resource('dynamodb')
-# fetching dynamodb table
-etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
 # Logger configuration
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-
 
 def default(obj):
     if isinstance(obj, Decimal):
@@ -28,11 +24,7 @@ def userDetails(body):
         user_type = body['user_type']
         logger.info(user_id)
         logger.info(user_type)
-        response = etoken_table.get_item(
-            Key={
-                'pk': user_id,
-                'sk': user_type
-            })
+        response = fetchUser(user_id,user_type)
     except (ClientError, KeyError) as e:
         if e.response['Error']['Code'] == "ConditionalCheckFailedException":
             logger.info(e.response['Error']['Message'])

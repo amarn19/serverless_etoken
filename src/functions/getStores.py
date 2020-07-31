@@ -6,11 +6,8 @@ import logging
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
+from src.repositories.repository import fetchStores
 
-# dynamodb instance creation
-dynamodb = boto3.resource('dynamodb')
-# fetching dynamodb table
-etoken_table = dynamodb.Table(os.environ['ETOKEN_TABLE'])
 # Logger configuration
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -25,9 +22,7 @@ def default(obj):
 def storesList(body):
     try:
         zipcode = body['zipcode']
-        response = etoken_table.query(
-            KeyConditionExpression=Key('pk').eq(zipcode)
-        )
+        response = fetchStores(zipcode)
     except ClientError as e:
         if e.response['Error']['Code'] == "ConditionalCheckFailedException":
             logger.info(e.response['Error']['Message'])

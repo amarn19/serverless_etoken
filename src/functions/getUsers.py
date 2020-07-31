@@ -4,8 +4,8 @@ import os
 import json
 import logging
 from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key, Attr
 from decimal import Decimal
+from src.repositories.repository import fetchUsers
 
 # dynamodb instance creation
 dynamodb = boto3.resource('dynamodb')
@@ -21,11 +21,9 @@ def default(obj):
     raise TypeError("Object of type '%s' is not JSON serializable" % type(obj).__name__)
 
 # function to fetch all users 
-def fetchUsers():
+def fetchAllUsers():
     try:
-         response = etoken_table.scan(
-             FilterExpression=Attr("type").eq("user")
-         )
+         response = fetchUsers()
          while 'LastEvaluatedKey' in response:
             response = etoken_table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
             data.extend(response['Items'])
@@ -40,7 +38,7 @@ def fetchUsers():
 # Lambda handler function
 def getUsers(event, context, dynamodb=None):
     try:
-        response = fetchUsers()
+        response = fetchAllUsers()
         data = response['Items']
         
         logger.info(response)
