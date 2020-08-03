@@ -4,40 +4,51 @@ import os
 import json
 import logging
 from botocore.exceptions import ClientError
-from src.repositories.repository import registerSlot
+from decimal import Decimal
+from src.repositories.repository import checkSlot
 
 # Logger configuration
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# function to book slot
-def book(body):
+def default(obj):
+    if isinstance(obj, Decimal):
+        return str(obj)
+    raise TypeError("Object of type '%s' is not JSON serializable" %
+                    type(obj).__name__)
+
+# function to fetch single user details
+def check(body):
     try:
         zipcode = body['zipcode']
         store_name = body['store_name']
-        slot_date = body['slot_date']
         logger.info(zipcode)
         logger.info(store_name)
-        logger.info(slot_date)
-        response = registerSlot(zipcode,store_name,slot_date)
-    except ClientError as e:
+        response = checkSlot(zipcode,store_name)
+    except (ClientError, KeyError) as e:
+        if e.response['Error']['Code'] == "ConditionalCheckFailedException":
+            logger.info(e.response['Error']['Message'])
+        else:
             raise
     else:
         return response
 
 # Lambda handler function
-def bookSlot(event, context, dynamodb=None):
+def checkAvailability(event, context, dynamodb=None):
     try:
         body = ast.literal_eval(event['body'])
-        response = book(body)
+        response = check(body)
         logger.info(response)
+        if 'Item' not in response:
+            raise KeyError('User does not exist')
         return {'statusCode': 200,
-                'headers': {
-                    "Access-Control-Allow-Origin": "*",
+                'headers':
+                    {"Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Credentials": True,
                     "Access-Control-Allow-Headers": "Authorization"},
-                'body': json.dumps('Succesfully booked slot')}
-    except (Exception,ClientError) as e:
+                'body': json.dumps(response['Item'], default=default)
+                }
+    except Exception as e:
         logger.info('Closing lambda function')
         logger.info(e)
         return {
@@ -46,6 +57,5 @@ def bookSlot(event, context, dynamodb=None):
                 {"Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Credentials": True,
                 "Access-Control-Allow-Headers": "Authorization"},
-            'body': json.dumps('Error booking slot')
+            'body': 'Error:{}'.format(e)
         }
-

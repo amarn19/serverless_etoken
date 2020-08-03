@@ -86,7 +86,7 @@ def updateItem(pk,sk,item):
             },
             ReturnValues="UPDATED_NEW"
         )
-    except ClientError as e:
+    except (ClientError,Exception) as e:
             raise
     return response
 
@@ -107,6 +107,42 @@ def newSlots(zipcode,store_name,slot_date,slot_info):
             },
             ReturnValues="UPDATED_NEW"
         )
-    except Exception as e:
-            print(e)
+    except (Exception,ClientError) as e:
+        raise
+    return response
+
+def registerSlot(zipcode,store_name,slot_date):
+    logger.info(slot_date)
+    try:
+        response = etoken_table.update_item(
+            Key={
+                'pk': zipcode,
+                'sk': store_name
+            },
+            UpdateExpression="set #s.#d.#t = #s.#d.#t - :a",
+            ExpressionAttributeNames={
+                '#s': "slots",
+                '#d' : slot_date,
+                '#t' : "tokens"
+            },
+            ExpressionAttributeValues={
+                ':a': 1
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+    except (Exception,ClientError) as e:
+            raise
+    return response
+
+def checkSlot(zipcode,store_name):
+    logger.info(zipcode)
+    try:
+        response = etoken_table.get_item(
+            Key={
+                'pk': zipcode,
+                'sk': store_name
+            },
+            AttributesToGet = ["slots"])
+    except (ClientError, KeyError) as e:
+            raise
     return response

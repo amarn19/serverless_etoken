@@ -56,7 +56,18 @@ functions:
           request:
             schema:
               application/json: ${file(src/schema/createUser_request.json)}
-            
+
+  checkSlot:
+    handler: src/functions/checkAvailability.checkAvailability
+    description: POST /user/checkSlot
+    events:
+      - http:
+          method: post
+          path: /user/checkSlot
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+
   createStore:
     handler: src/functions/createStore.createStore
     description: POST /user/register
