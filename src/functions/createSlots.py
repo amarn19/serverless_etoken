@@ -60,7 +60,7 @@ def createSlots(event, context, dynamodb=None):
                     {"Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Credentials": True,
                     "Access-Control-Allow-Headers": "Authorization"},
-                'body': json.dumps('Succesfully created user')}
+                'body': json.dumps('Succesfully created slot')}
     except Exception as e:
         logger.info('Closing lambda function')
         return {
@@ -69,5 +69,5 @@ def createSlots(event, context, dynamodb=None):
                 {"Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Credentials": True,
                 "Access-Control-Allow-Headers": "Authorization"},
-            'body': json.dumps('Error creating user')
+            'body': json.dumps('Error creating slot')
         }

@@ -37,7 +37,7 @@ def updateRecord(event, context, dynamodb=None):
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Credentials": True,
                     "Access-Control-Allow-Headers": "Authorization"},
-                'body': json.dumps('Succesfully created user profile')}
+                'body': json.dumps('Succesfully updated record')}
     except Exception as e:
         logger.info('Closing lambda function')
         logger.info(e)
@@ -47,5 +47,5 @@ def updateRecord(event, context, dynamodb=None):
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Credentials": True,
                 "Access-Control-Allow-Headers": "Authorization"},
-            'body': json.dumps('Error creating user profile')
+            'body': json.dumps('Error updating record')
         }
