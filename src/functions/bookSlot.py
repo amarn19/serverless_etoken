@@ -5,6 +5,7 @@ import json
 import logging
 from botocore.exceptions import ClientError
 from src.repositories.repository import registerSlot
+import uuid
 
 # Logger configuration
 logger = logging.getLogger()
@@ -31,12 +32,19 @@ def bookSlot(event, context, dynamodb=None):
         body = ast.literal_eval(event['body'])
         response = book(body)
         logger.info(response)
+        id = uuid.uuid1()
+        bodyparams={
+            "Message":"Succesfully booked slot",
+            "Token":id.int
+        }
+        logger.info(bodyparams)
         return {'statusCode': 200,
                 'headers': {
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Credentials": True,
                     "Access-Control-Allow-Headers": "Authorization"},
-                'body': json.dumps('Succesfully booked slot')}
+                'body': json.dumps(bodyparams)
+                }
     except (Exception,ClientError) as e:
         logger.info('Closing lambda function')
         logger.info(e)
