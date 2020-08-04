@@ -14,7 +14,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # createUser/createStore
-def newItem():
+def newItem(item):
     try:
         response = etoken_table.put_item(
             Item=item,

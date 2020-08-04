@@ -57,6 +57,17 @@ functions:
             schema:
               application/json: ${file(src/schema/createUser_request.json)}
 
+  createUserBooking:
+    handler: src/functions/createUserBooking.createUserBooking
+    description: POST /user/userBooking
+    events:
+      - http:
+          method: post
+          path: /user/userBooking
+          cors:
+            origin: "*"
+            headers: ${self:custom.allowedHeaders}
+
   checkSlot:
     handler: src/functions/checkAvailability.checkAvailability
     description: POST /user/checkSlot
