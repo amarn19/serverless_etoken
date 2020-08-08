@@ -32,10 +32,10 @@ def bookSlot(event, context, dynamodb=None):
         body = ast.literal_eval(event['body'])
         response = book(body)
         logger.info(response)
-        id = uuid.uuid1()
+        id = uuid.uuid4().hex
         bodyparams={
             "Message":"Succesfully booked slot",
-            "Token":id.int
+            "Token":id
         }
         logger.info(bodyparams)
         return {'statusCode': 200,
